@@ -53,9 +53,10 @@ class PdcTemplate(Base):
     def to_dict(self):
         attributes = {}
         for i in range(1, 36):
-            val = getattr(self, f'attribute_{i}')
-            if val:
-                attributes[val] = val
+            attr_name = f'attribute_{i}'
+            val = getattr(self, attr_name)
+            if val is not None:
+                attributes[attr_name] = val
         return {
             'template_id': self.template_id,
             'name': self.name,

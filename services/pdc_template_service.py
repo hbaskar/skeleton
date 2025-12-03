@@ -70,11 +70,27 @@ def update_template(template_id: int, data) -> Optional[PdcTemplate]:
         template = query.first()
         if not template:
             return None
+        # Check if any class uses this template
+        from models.pdc_class import PdcClass
+        class_count = session.query(PdcClass).filter(PdcClass.template_id == template_id).count()
+     
+        attrs = data.get('attributes')
+        if attrs is None:
+            attrs = {}
+        # Only block if actual attribute fields are being updated
+        if class_count > 0:
+            for i in range(1, 36):
+                attr_name = f'attribute_{i}'
+                if attr_name in attrs and attrs[attr_name] is not None:
+                    logging.error(f"Attempt to update {attr_name} when classes exist for template {template_id}")
+                    raise ValueError('Cannot update template attributes: one or more classes use this template.')
         template.name = data.get('name', template.name)
-        attrs = data.get('attributes', {})
         for i in range(1, 36):
             attr_name = f'attribute_{i}'
-            if attr_name in attrs:
+            # Only update attribute if present and not None
+            if attr_name in attrs and attrs[attr_name] is not None:
+                if class_count > 0:
+                    continue  # skip attribute update if classes exist
                 setattr(template, attr_name, attrs[attr_name])
         template.updated_at = datetime.datetime.utcnow()
         template.updated_by = data.get('updated_by', template.updated_by)
@@ -85,6 +101,7 @@ def update_template(template_id: int, data) -> Optional[PdcTemplate]:
             return template
         except Exception as e:
             session.rollback()
+            logging.error(f"Error updating template {template_id}: {e}")
             # Check for IntegrityError (duplicate name)
             if hasattr(e, 'orig') and hasattr(e.orig, 'args') and 'duplicate key' in str(e.orig.args):
                 raise ValueError('A template with this name already exists.')
