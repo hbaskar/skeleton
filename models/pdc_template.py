@@ -1,8 +1,6 @@
 from sqlalchemy import Column, Integer, String, DateTime, Boolean
-from sqlalchemy.ext.declarative import declarative_base
 import datetime
-
-Base = declarative_base()
+from . import Base
 
 class PdcTemplate(Base):
     __tablename__ = 'pdc_templates_test'

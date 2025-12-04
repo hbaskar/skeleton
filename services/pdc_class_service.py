@@ -1,4 +1,7 @@
-from models.pdc_class import PdcClass, Base
+from models.pdc_class import PdcClass
+from models.pdc_template import PdcTemplate
+from models.pdc_template_field import PdcTemplateField
+from models import Base
 from config.database import get_connection_string
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
@@ -8,8 +11,11 @@ from contextlib import contextmanager
 from utils.pagination import paginate_query
 import logging
 
+
 engine = create_engine(f"mssql+pyodbc:///?odbc_connect={get_connection_string()}")
 SessionLocal = sessionmaker(bind=engine)
+# Ensure all tables are created (for dev/migration only; remove in prod)
+Base.metadata.create_all(engine)
 
 @contextmanager
 def get_session():

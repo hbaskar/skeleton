@@ -57,9 +57,151 @@ Both templates and classes support up to 35 dynamic attributes. These attributes
 - For classes: request keys are template-defined names (e.g., `C1`, `C2`), mapped to the correct columns; response keys are also template-defined names.
 - This allows partial updates and flexible data entry for both templates and classes.
 
-# Postman API Usage Guide
 
-This document describes the request body and response for each endpoint in the Templates API collection.
+# Template Field Endpoints
+
+## Create Template Field
+**POST** `/api/pdc-template-field/create`
+
+**Request Body:**
+```
+{
+  "template_id": 1,
+  "metadata_key": "C1",
+  "display_name": "First Name",
+  "data_type": "string",
+  "is_required": true,
+  "default_value": "",
+  "validation_rule": "^[A-Za-z]+$",
+  "sort_order": 1,
+  "is_active": true,
+  "created_by": "tester"
+}
+```
+
+**Response:**
+```
+{
+  "template_field_id": 1,
+  "template_id": 1,
+  "metadata_key": "C1",
+  "display_name": "First Name",
+  "data_type": "string",
+  "is_required": true,
+  "default_value": "",
+  "validation_rule": "^[A-Za-z]+$",
+  "sort_order": 1,
+  "is_active": true,
+  "created_at": "2025-12-03T00:00:00",
+  "created_by": "tester",
+  "modified_at": null,
+  "modified_by": null
+}
+```
+
+---
+
+## Get Template Field
+**GET** `/api/pdc-template-field/get?template_field_id=1`
+
+**Response:**
+```
+{
+  "template_field_id": 1,
+  "template_id": 1,
+  "metadata_key": "C1",
+  "display_name": "First Name",
+  "data_type": "string",
+  "is_required": true,
+  "default_value": "",
+  "validation_rule": "^[A-Za-z]+$",
+  "sort_order": 1,
+  "is_active": true,
+  "created_at": "2025-12-03T00:00:00",
+  "created_by": "tester",
+  "modified_at": null,
+  "modified_by": null
+}
+```
+
+---
+
+## List Template Fields
+**GET** `/api/pdc-template-field/list?template_id=1`
+
+**Response:**
+```
+[
+  {
+    "template_field_id": 1,
+    "template_id": 1,
+    "metadata_key": "C1",
+    "display_name": "First Name",
+    "data_type": "string",
+    "is_required": true,
+    "default_value": "",
+    "validation_rule": "^[A-Za-z]+$",
+    "sort_order": 1,
+    "is_active": true,
+    "created_at": "2025-12-03T00:00:00",
+    "created_by": "tester",
+    "modified_at": null,
+    "modified_by": null
+  }
+]
+```
+
+---
+
+## Update Template Field
+**POST** `/api/pdc-template-field/update`
+
+**Request Body:**
+```
+{
+  "template_field_id": 1,
+  "display_name": "First Name Updated",
+  "is_active": false,
+  "modified_by": "updater"
+}
+```
+
+**Response:**
+```
+{
+  "template_field_id": 1,
+  "template_id": 1,
+  "metadata_key": "C1",
+  "display_name": "First Name Updated",
+  "data_type": "string",
+  "is_required": true,
+  "default_value": "",
+  "validation_rule": "^[A-Za-z]+$",
+  "sort_order": 1,
+  "is_active": false,
+  "created_at": "2025-12-03T00:00:00",
+  "created_by": "tester",
+  "modified_at": "2025-12-03T01:00:00",
+  "modified_by": "updater"
+}
+```
+
+---
+
+## Delete Template Field
+**POST** `/api/pdc-template-field/delete`
+
+**Request Body:**
+```
+{
+  "template_field_id": 1
+}
+```
+
+**Response:**
+```
+Deleted
+```
 
 ---
 

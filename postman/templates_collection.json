@@ -5,26 +5,68 @@
     "description": "CRUD operations for pdc_templates_test endpoints"
   },
   "item": [
-            {
-              "name": "Get Blank Class",
-              "request": {
-                "method": "POST",
-                "header": [
-                  { "key": "Content-Type", "value": "application/json" }
-                ],
-                "body": {
-                  "mode": "raw",
-                  "raw": "{\n  \"template_id\": 1\n}"
-                },
-                "url": {
-                  "raw": "http://localhost:7071/api/pdc-class/blank",
-                  "protocol": "http",
-                  "host": ["localhost"],
-                  "port": "7071",
-                  "path": ["api", "pdc-class", "blank"]
-                }
-              }
-            },
+    {
+      "name": "Utility",
+      "item": [
+        {
+          "name": "Get Blank Class",
+          "request": {
+            "method": "POST",
+            "header": [ { "key": "Content-Type", "value": "application/json" } ],
+            "body": { "mode": "raw", "raw": "{\n  \"template_id\": 1\n}" },
+            "url": { "raw": "http://localhost:7071/api/pdc-class/blank", "protocol": "http", "host": ["localhost"], "port": "7071", "path": ["api", "pdc-class", "blank"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Template Fields",
+      "item": [
+        {
+          "name": "Create Template Field",
+          "request": {
+            "method": "POST",
+            "header": [ { "key": "Content-Type", "value": "application/json" } ],
+            "body": { "mode": "raw", "raw": "{\n  \"template_id\": 1,\n  \"metadata_key\": \"C1\",\n  \"display_name\": \"First Name\",\n  \"data_type\": \"string\",\n  \"is_required\": true,\n  \"default_value\": \"\",\n  \"validation_rule\": \"^[A-Za-z]+$\",\n  \"sort_order\": 1,\n  \"is_active\": true,\n  \"created_by\": \"tester\"\n}" },
+            "url": { "raw": "http://localhost:7071/api/pdc-template-field/create", "protocol": "http", "host": ["localhost"], "port": "7071", "path": ["api", "pdc-template-field", "create"] }
+          }
+        },
+        {
+          "name": "Get Template Field",
+          "request": {
+            "method": "GET",
+            "header": [ { "key": "Content-Type", "value": "application/json" } ],
+            "url": { "raw": "http://localhost:7071/api/pdc-template-field/get?template_field_id=1", "protocol": "http", "host": ["localhost"], "port": "7071", "path": ["api", "pdc-template-field", "get"], "query": [ { "key": "template_field_id", "value": "1" } ] }
+          }
+        },
+        {
+          "name": "List Template Fields",
+          "request": {
+            "method": "GET",
+            "header": [ { "key": "Content-Type", "value": "application/json" } ],
+            "url": { "raw": "http://localhost:7071/api/pdc-template-field/list?template_id=1", "protocol": "http", "host": ["localhost"], "port": "7071", "path": ["api", "pdc-template-field", "list"], "query": [ { "key": "template_id", "value": "1" } ] }
+          }
+        },
+        {
+          "name": "Update Template Field",
+          "request": {
+            "method": "POST",
+            "header": [ { "key": "Content-Type", "value": "application/json" } ],
+            "body": { "mode": "raw", "raw": "{\n  \"template_field_id\": 1,\n  \"display_name\": \"First Name Updated\",\n  \"is_active\": false,\n  \"modified_by\": \"updater\"\n}" },
+            "url": { "raw": "http://localhost:7071/api/pdc-template-field/update", "protocol": "http", "host": ["localhost"], "port": "7071", "path": ["api", "pdc-template-field", "update"] }
+          }
+        },
+        {
+          "name": "Delete Template Field",
+          "request": {
+            "method": "POST",
+            "header": [ { "key": "Content-Type", "value": "application/json" } ],
+            "body": { "mode": "raw", "raw": "{\n  \"template_field_id\": 1\n}" },
+            "url": { "raw": "http://localhost:7071/api/pdc-template-field/delete", "protocol": "http", "host": ["localhost"], "port": "7071", "path": ["api", "pdc-template-field", "delete"] }
+          }
+        }
+      ]
+    },
     {
       "name": "Templates",
       "item": [
@@ -32,100 +74,45 @@
           "name": "Create Template",
           "request": {
             "method": "POST",
-            "header": [
-              { "key": "Content-Type", "value": "application/json" }
-            ],
-            "body": {
-              "mode": "raw",
-              "raw": "{\n  \"name\": \"Test Template\",\n  \"attributes\": {\n    \"attribute_1\": \"A1\",\n    \"attribute_2\": \"A2\",\n    \"attribute_5\": \"A5\"\n  },\n  \"created_by\": \"tester\",\n  \"is_active\": true\n}"
-            },
-            "url": {
-              "raw": "http://localhost:7071/api/pdc-template",
-              "protocol": "http",
-              "host": ["localhost"],
-              "port": "7071",
-              "path": ["api", "pdc-template"]
-            }
+            "header": [ { "key": "Content-Type", "value": "application/json" } ],
+            "body": { "mode": "raw", "raw": "{\n  \"name\": \"Test Template\",\n  \"attributes\": {\n    \"attribute_1\": \"A1\",\n    \"attribute_2\": \"A2\",\n    \"attribute_5\": \"A5\"\n  },\n  \"created_by\": \"tester\",\n  \"is_active\": true\n}" },
+            "url": { "raw": "http://localhost:7071/api/pdc-template", "protocol": "http", "host": ["localhost"], "port": "7071", "path": ["api", "pdc-template"] }
           }
         },
         {
           "name": "Get Template",
           "request": {
             "method": "POST",
-            "header": [
-              { "key": "Content-Type", "value": "application/json" }
-            ],
-            "body": {
-              "mode": "raw",
-              "raw": "{\n  \"template_id\": 1\n}"
-            },
-            "url": {
-              "raw": "http://localhost:7071/api/pdc-template/get",
-              "protocol": "http",
-              "host": ["localhost"],
-              "port": "7071",
-              "path": ["api", "pdc-template", "get"]
-            }
+            "header": [ { "key": "Content-Type", "value": "application/json" } ],
+            "body": { "mode": "raw", "raw": "{\n  \"template_id\": 1\n}" },
+            "url": { "raw": "http://localhost:7071/api/pdc-template/get", "protocol": "http", "host": ["localhost"], "port": "7071", "path": ["api", "pdc-template", "get"] }
           }
         },
         {
           "name": "List Templates",
           "request": {
             "method": "POST",
-            "header": [
-              { "key": "Content-Type", "value": "application/json" }
-            ],
-            "body": {
-              "mode": "raw",
-              "raw": "{\n  \"cursor\": 0,\n  \"limit\": 10\n}"
-            },
-            "url": {
-              "raw": "http://localhost:7071/api/pdc-template/list",
-              "protocol": "http",
-              "host": ["localhost"],
-              "port": "7071",
-              "path": ["api", "pdc-template", "list"]
-            }
+            "header": [ { "key": "Content-Type", "value": "application/json" } ],
+            "body": { "mode": "raw", "raw": "{\n  \"cursor\": 0,\n  \"limit\": 10\n}" },
+            "url": { "raw": "http://localhost:7071/api/pdc-template/list", "protocol": "http", "host": ["localhost"], "port": "7071", "path": ["api", "pdc-template", "list"] }
           }
         },
         {
           "name": "Update Template",
           "request": {
             "method": "POST",
-            "header": [
-              { "key": "Content-Type", "value": "application/json" }
-            ],
-            "body": {
-              "mode": "raw",
-              "raw": "{\n  \"template_id\": 1,\n  \"name\": \"Updated Name\",\n  \"attributes\": {\n    \"attribute_1\": \"C1\",\n    \"attribute_3\": \"C3\"\n  },\n  \"updated_by\": \"updater\",\n  \"is_active\": false\n}"
-            },
-            "url": {
-              "raw": "http://localhost:7071/api/pdc-template/update",
-              "protocol": "http",
-              "host": ["localhost"],
-              "port": "7071",
-              "path": ["api", "pdc-template", "update"]
-            }
+            "header": [ { "key": "Content-Type", "value": "application/json" } ],
+            "body": { "mode": "raw", "raw": "{\n  \"template_id\": 1,\n  \"name\": \"Updated Name\",\n  \"attributes\": {\n    \"attribute_1\": \"C1\",\n    \"attribute_3\": \"C3\"\n  },\n  \"updated_by\": \"updater\",\n  \"is_active\": false\n}" },
+            "url": { "raw": "http://localhost:7071/api/pdc-template/update", "protocol": "http", "host": ["localhost"], "port": "7071", "path": ["api", "pdc-template", "update"] }
           }
         },
         {
           "name": "Delete Template",
           "request": {
             "method": "POST",
-            "header": [
-              { "key": "Content-Type", "value": "application/json" }
-            ],
-            "body": {
-              "mode": "raw",
-              "raw": "{\n  \"template_id\": 1\n}"
-            },
-            "url": {
-              "raw": "http://localhost:7071/api/pdc-template/delete",
-              "protocol": "http",
-              "host": ["localhost"],
-              "port": "7071",
-              "path": ["api", "pdc-template", "delete"]
-            }
+            "header": [ { "key": "Content-Type", "value": "application/json" } ],
+            "body": { "mode": "raw", "raw": "{\n  \"template_id\": 1\n}" },
+            "url": { "raw": "http://localhost:7071/api/pdc-template/delete", "protocol": "http", "host": ["localhost"], "port": "7071", "path": ["api", "pdc-template", "delete"] }
           }
         }
       ]
@@ -137,100 +124,45 @@
           "name": "Create Class",
           "request": {
             "method": "POST",
-            "header": [
-              { "key": "Content-Type", "value": "application/json" }
-            ],
-            "body": {
-              "mode": "raw",
-              "raw": "{\n  \"template_id\": 1,\n  \"name\": \"Class Name\",\n  \"attributes\": {\n    \"C1\": \"Hari\",\n    \"C3\": \"Baskar\"\n  },\n  \"created_by\": \"tester\",\n  \"is_active\": true\n}"
-            },
-            "url": {
-              "raw": "http://localhost:7071/api/pdc-class",
-              "protocol": "http",
-              "host": ["localhost"],
-              "port": "7071",
-              "path": ["api", "pdc-class"]
-            }
+            "header": [ { "key": "Content-Type", "value": "application/json" } ],
+            "body": { "mode": "raw", "raw": "{\n  \"template_id\": 1,\n  \"name\": \"Class Name\",\n  \"attributes\": {\n    \"C1\": \"Hari\",\n    \"C3\": \"Baskar\"\n  },\n  \"created_by\": \"tester\",\n  \"is_active\": true\n}" },
+            "url": { "raw": "http://localhost:7071/api/pdc-class", "protocol": "http", "host": ["localhost"], "port": "7071", "path": ["api", "pdc-class"] }
           }
         },
         {
           "name": "Get Class",
           "request": {
             "method": "POST",
-            "header": [
-              { "key": "Content-Type", "value": "application/json" }
-            ],
-            "body": {
-              "mode": "raw",
-              "raw": "{\n  \"class_id\": 1\n}"
-            },
-            "url": {
-              "raw": "http://localhost:7071/api/pdc-class/get",
-              "protocol": "http",
-              "host": ["localhost"],
-              "port": "7071",
-              "path": ["api", "pdc-class", "get"]
-            }
+            "header": [ { "key": "Content-Type", "value": "application/json" } ],
+            "body": { "mode": "raw", "raw": "{\n  \"class_id\": 1\n}" },
+            "url": { "raw": "http://localhost:7071/api/pdc-class/get", "protocol": "http", "host": ["localhost"], "port": "7071", "path": ["api", "pdc-class", "get"] }
           }
         },
         {
           "name": "List Classes",
           "request": {
             "method": "POST",
-            "header": [
-              { "key": "Content-Type", "value": "application/json" }
-            ],
-            "body": {
-              "mode": "raw",
-              "raw": "{\n  \"cursor\": 0,\n  \"limit\": 10\n}"
-            },
-            "url": {
-              "raw": "http://localhost:7071/api/pdc-class/list",
-              "protocol": "http",
-              "host": ["localhost"],
-              "port": "7071",
-              "path": ["api", "pdc-class", "list"]
-            }
+            "header": [ { "key": "Content-Type", "value": "application/json" } ],
+            "body": { "mode": "raw", "raw": "{\n  \"cursor\": 0,\n  \"limit\": 10\n}" },
+            "url": { "raw": "http://localhost:7071/api/pdc-class/list", "protocol": "http", "host": ["localhost"], "port": "7071", "path": ["api", "pdc-class", "list"] }
           }
         },
         {
           "name": "Update Class",
           "request": {
             "method": "POST",
-            "header": [
-              { "key": "Content-Type", "value": "application/json" }
-            ],
-            "body": {
-              "mode": "raw",
-              "raw": "{\n  \"class_id\": 1,\n  \"name\": \"Updated Name\",\n  \"attributes\": {\n    \"C1\": \"New Value for C1\",\n    \"C3\": \"New Value for C3\"\n  },\n  \"updated_by\": \"updater\",\n  \"is_active\": false\n}"
-            },
-            "url": {
-              "raw": "http://localhost:7071/api/pdc-class/update",
-              "protocol": "http",
-              "host": ["localhost"],
-              "port": "7071",
-              "path": ["api", "pdc-class", "update"]
-            }
+            "header": [ { "key": "Content-Type", "value": "application/json" } ],
+            "body": { "mode": "raw", "raw": "{\n  \"class_id\": 1,\n  \"name\": \"Updated Name\",\n  \"attributes\": {\n    \"C1\": \"New Value for C1\",\n    \"C3\": \"New Value for C3\"\n  },\n  \"updated_by\": \"updater\",\n  \"is_active\": false\n}" },
+            "url": { "raw": "http://localhost:7071/api/pdc-class/update", "protocol": "http", "host": ["localhost"], "port": "7071", "path": ["api", "pdc-class", "update"] }
           }
         },
         {
           "name": "Delete Class",
           "request": {
             "method": "POST",
-            "header": [
-              { "key": "Content-Type", "value": "application/json" }
-            ],
-            "body": {
-              "mode": "raw",
-              "raw": "{\n  \"class_id\": 1\n}"
-            },
-            "url": {
-              "raw": "http://localhost:7071/api/pdc-class/delete",
-              "protocol": "http",
-              "host": ["localhost"],
-              "port": "7071",
-              "path": ["api", "pdc-class", "delete"]
-            }
+            "header": [ { "key": "Content-Type", "value": "application/json" } ],
+            "body": { "mode": "raw", "raw": "{\n  \"class_id\": 1\n}" },
+            "url": { "raw": "http://localhost:7071/api/pdc-class/delete", "protocol": "http", "host": ["localhost"], "port": "7071", "path": ["api", "pdc-class", "delete"] }
           }
         }
       ]
