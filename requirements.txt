@@ -1,7 +1,6 @@
 azure-functions
+pydantic
 pyodbc
+pytest
 python-dotenv
 sqlalchemy
-pytest
-sqlalchemy
-pydantic

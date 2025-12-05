@@ -33,6 +33,7 @@ def create_template_field(data) -> PdcTemplateField:
             default_value=data.get('default_value'),
             validation_rule=data.get('validation_rule'),
             sort_order=data.get('sort_order'),
+            lookup_type=data.get('lookup_type'),
             is_active=data.get('is_active', True),
             created_at=datetime.datetime.utcnow(),
             created_by=data['created_by']

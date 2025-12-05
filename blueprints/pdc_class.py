@@ -5,10 +5,59 @@ from services.pdc_class_service import (
 )
 import json
 
-def register(app):
-    @app.function_name(name="GetBlankPdcClass")
-    @app.route(route="pdc-class/blank", methods=["POST"])
-    def get_blank_pdc_class(req: func.HttpRequest, context: func.Context) -> func.HttpResponse:
+bp = func.Blueprint()
+
+@bp.route(route="odc-class/blank", methods=["POST"])
+def get_blank_odc_class(req: func.HttpRequest, context: func.Context) -> func.HttpResponse:
+        data = req.get_json()
+        template_id = int(data.get("template_id"))
+        from models.pdc_template import PdcTemplate
+        from models.pdc_template_field import PdcTemplateField
+        from config.database import get_connection_string
+        from sqlalchemy import create_engine
+        from sqlalchemy.orm import sessionmaker
+        engine = create_engine(f"mssql+pyodbc:///?odbc_connect={get_connection_string()}")
+        SessionLocal = sessionmaker(bind=engine)
+        with SessionLocal() as session:
+            template_obj = session.query(PdcTemplate).filter(PdcTemplate.template_id == template_id).first()
+            if not template_obj:
+                return func.HttpResponse("Template not found", status_code=404)
+            # Get all attribute names from template (attribute_1 ... attribute_35)
+            template_attrs = {}
+            fields = session.query(PdcTemplateField).filter(PdcTemplateField.template_id == template_id).all()
+            template_attrs = {}
+            metadata_keys = {field.metadata_key: field for field in fields}
+            for i in range(1, 36):
+                attr_name = f'attribute_{i}'
+                key = getattr(template_obj, attr_name)
+                # Only include if key matches a metadata_key in template_fields
+                if key and key in metadata_keys:
+                    field = metadata_keys[key]
+                    template_attrs[key] = {
+                        "display_name": field.display_name,
+                        "data_type": field.data_type,
+                        "is_required": field.is_required,
+                        "default_value": field.default_value,
+                        "validation_rule": field.validation_rule,
+                        "sort_order": field.sort_order,
+                        "is_active": field.is_active,
+                        "lookup_type": getattr(field, "lookup_type", None)
+                    }
+            blank_record = {
+                "class_id": None,
+                "template_id": template_id,
+                "name": None,
+                "attributes": template_attrs,
+                "created_at": None,
+                "created_by": None,
+                "updated_at": None,
+                "updated_by": None,
+                "is_active": True
+            }
+        return func.HttpResponse(json.dumps(blank_record), status_code=200)
+    
+@bp.route(route="pdc-class/blank", methods=["POST"])
+def get_blank_pdc_class(req: func.HttpRequest, context: func.Context) -> func.HttpResponse:
         data = req.get_json()
         template_id = int(data.get("template_id"))
         from models.pdc_template import PdcTemplate
@@ -37,9 +86,8 @@ def register(app):
             }
         return func.HttpResponse(json.dumps(blank_record), status_code=200)
     
-    @app.function_name(name="CreatePdcClass")
-    @app.route(route="pdc-class", methods=["POST"])
-    def create_pdc_class(req: func.HttpRequest, context: func.Context) -> func.HttpResponse:
+@bp.route(route="pdc-class", methods=["POST"])
+def create_pdc_class(req: func.HttpRequest, context: func.Context) -> func.HttpResponse:
         data = req.get_json()
         schema = PdcClassCreate(**data)
         try:
@@ -58,9 +106,8 @@ def register(app):
             import traceback
             return func.HttpResponse(f"Internal server error: {str(e)}\n{traceback.format_exc()}", status_code=500)
 
-    @app.function_name(name="GetPdcClass")
-    @app.route(route="pdc-class/get", methods=["POST"])
-    def get_pdc_class(req: func.HttpRequest, context: func.Context) -> func.HttpResponse:
+@bp.route(route="pdc-class/get", methods=["POST"])
+def get_pdc_class(req: func.HttpRequest, context: func.Context) -> func.HttpResponse:
         data = req.get_json()
         class_id = int(data.get("class_id"))
         pdc_class = get_class(class_id)
@@ -77,9 +124,8 @@ def register(app):
             template_obj = session.query(PdcTemplate).filter(PdcTemplate.template_id == pdc_class.template_id).first()
         return func.HttpResponse(json.dumps(pdc_class.to_dict(template_obj)), status_code=200)
 
-    @app.function_name(name="ListPdcClasses")
-    @app.route(route="pdc-class/list", methods=["POST"])
-    def list_pdc_classes(req: func.HttpRequest, context: func.Context) -> func.HttpResponse:
+@bp.route(route="pdc-class/list", methods=["POST"])
+def list_pdc_classes(req: func.HttpRequest, context: func.Context) -> func.HttpResponse:
         data = req.get_json() if req.get_body() else {}
         cursor = int(data.get('cursor', 0))
         limit = int(data.get('limit', 10))
@@ -101,9 +147,8 @@ def register(app):
         }
         return func.HttpResponse(json.dumps(response), status_code=200)
 
-    @app.function_name(name="UpdatePdcClass")
-    @app.route(route="pdc-class/update", methods=["POST"])
-    def update_pdc_class(req: func.HttpRequest, context: func.Context) -> func.HttpResponse:
+@bp.route(route="pdc-class/update", methods=["POST"])
+def update_pdc_class(req: func.HttpRequest, context: func.Context) -> func.HttpResponse:
         data = req.get_json()
         class_id = int(data.get("class_id"))
         schema = PdcClassUpdate(**data)
@@ -121,9 +166,8 @@ def register(app):
             template_obj = session.query(PdcTemplate).filter(PdcTemplate.template_id == pdc_class.template_id).first()
         return func.HttpResponse(json.dumps(pdc_class.to_dict(template_obj)), status_code=200)
 
-    @app.function_name(name="DeletePdcClass")
-    @app.route(route="pdc-class/delete", methods=["POST"])
-    def delete_pdc_class(req: func.HttpRequest, context: func.Context) -> func.HttpResponse:
+@bp.route(route="pdc-class/delete", methods=["POST"])
+def delete_pdc_class(req: func.HttpRequest, context: func.Context) -> func.HttpResponse:
         data = req.get_json()
         class_id = int(data.get("class_id"))
         deleted_record = delete_class(class_id)

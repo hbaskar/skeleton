@@ -14,6 +14,7 @@ class PdcTemplateField(Base):
     default_value = Column(String(250))
     validation_rule = Column(String(250))
     sort_order = Column(Integer)
+    lookup_type = Column(String(100))
     is_active = Column(Boolean, default=True, nullable=False)
     created_at = Column(DateTime, default=datetime.datetime.utcnow, nullable=False)
     created_by = Column(String(100), nullable=False)
@@ -31,6 +32,7 @@ class PdcTemplateField(Base):
             'default_value': self.default_value,
             'validation_rule': self.validation_rule,
             'sort_order': self.sort_order,
+            'lookup_type': self.lookup_type,
             'is_active': self.is_active,
             'created_at': self.created_at.isoformat() if self.created_at else None,
             'created_by': self.created_by,

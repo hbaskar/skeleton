@@ -11,12 +11,24 @@ class PdcTemplateFieldBase(BaseModel):
     default_value: Optional[str] = None
     validation_rule: Optional[str] = None
     sort_order: Optional[int] = None
+    lookup_type: Optional[str] = None
     is_active: Optional[bool] = True
 
 class PdcTemplateFieldCreate(PdcTemplateFieldBase):
     created_by: str
 
-class PdcTemplateFieldUpdate(PdcTemplateFieldBase):
+class PdcTemplateFieldUpdate(BaseModel):
+    template_field_id: int
+    template_id: Optional[int] = None
+    metadata_key: Optional[str] = None
+    display_name: Optional[str] = None
+    data_type: Optional[str] = None
+    is_required: Optional[bool] = None
+    default_value: Optional[str] = None
+    validation_rule: Optional[str] = None
+    sort_order: Optional[int] = None
+    lookup_type: Optional[str] = None
+    is_active: Optional[bool] = None
     modified_by: Optional[str] = None
 
 class PdcTemplateFieldOut(PdcTemplateFieldBase):

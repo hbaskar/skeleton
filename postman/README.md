@@ -426,30 +426,57 @@ Deleted
 
 ---
 
-## Get Class
-**POST** `/api/pdc-class/get`
+
+## Get Blank ODC Class
+**POST** `/api/odc-class/blank`
 
 **Request Body:**
 ```
 {
-  "class_id": 1
+  "template_id": 1
 }
 ```
 
 **Response:**
+
 ```
 {
-  "class_id": 1,
+  "class_id": null,
   "template_id": 1,
-  "name": "Class Name",
-  ...attributes...
-  "created_at": "2025-12-01T00:00:00",
-  "created_by": "tester",
+  "name": null,
+  "attributes": {
+    "A1": {
+      "display_name": "First Name",
+      "data_type": "string",
+      "is_required": true,
+      "default_value": "",
+      "validation_rule": "^[A-Za-z]+$",
+      "sort_order": 1,
+      "is_active": true,
+      "lookup_type": "dropdown"
+    },
+    "A2": {
+      "display_name": "Last Name",
+      "data_type": "string",
+      "is_required": false,
+      "default_value": null,
+      "validation_rule": null,
+      "sort_order": 2,
+      "is_active": true,
+      "lookup_type": null
+    },
+    ...
+  },
+  "created_at": null,
+  "created_by": null,
   "updated_at": null,
   "updated_by": null,
   "is_active": true
 }
 ```
+
+**Note:**
+- Each attribute object now includes a `lookup_type` field, which describes the UI or data lookup behavior for that attribute (e.g., `dropdown`, `text`, etc.).
 
 ---
 

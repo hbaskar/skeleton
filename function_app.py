@@ -1,10 +1,20 @@
+
+
 import azure.functions as func
-from blueprints import http_trigger, pdc_template, pdc_class, pdc_template_field
+from blueprints.pdc_template import bp as pdc_template_bp
+from blueprints.pdc_class import bp as pdc_class_bp
+from blueprints.pdc_template_field import bp as pdc_template_field_bp
 
-app = func.FunctionApp()
 
-# Register blueprints
-http_trigger.register(app)
-pdc_template.register(app)
-pdc_class.register(app)
-pdc_template_field.register(app)
+app = func.FunctionApp(http_auth_level=func.AuthLevel.ANONYMOUS)
+
+# Register blueprints using the blueprint pattern
+app.register_blueprint(pdc_template_bp)
+app.register_blueprint(pdc_class_bp)
+app.register_blueprint(pdc_template_field_bp)
+
+
+# import azure.functions as func
+# from blueprints import register
+# app = func.FunctionApp(http_auth_level=func.AuthLevel.ANONYMOUS)
+# register(app)

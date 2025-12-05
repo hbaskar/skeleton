@@ -5,10 +5,10 @@ from services.pdc_template_service import (
 )
 import json
 
-def register(app):
-    @app.function_name(name="CreatePdcTemplate")
-    @app.route(route="pdc-template", methods=["POST"])
-    def create_pdc_template(req: func.HttpRequest, context: func.Context) -> func.HttpResponse:
+bp = func.Blueprint()
+
+@bp.route(route="pdc-template", methods=["POST"])
+def create_pdc_template(req: func.HttpRequest, context: func.Context) -> func.HttpResponse:
         data = req.get_json()
         schema = PdcTemplateCreate(**data)
         try:
@@ -19,9 +19,8 @@ def register(app):
         except Exception as e:
             return func.HttpResponse("Internal server error", status_code=500)
 
-    @app.function_name(name="GetPdcTemplate")
-    @app.route(route="pdc-template/get", methods=["POST"])
-    def get_pdc_template(req: func.HttpRequest, context: func.Context) -> func.HttpResponse:
+@bp.route(route="pdc-template/get", methods=["POST"])
+def get_pdc_template(req: func.HttpRequest, context: func.Context) -> func.HttpResponse:
         data = req.get_json()
         template_id = int(data.get("template_id"))
         template = get_template(template_id)
@@ -29,9 +28,8 @@ def register(app):
             return func.HttpResponse("Not found", status_code=404)
         return func.HttpResponse(json.dumps(template.to_dict()), status_code=200)
 
-    @app.function_name(name="ListPdcTemplates")
-    @app.route(route="pdc-template/list", methods=["POST"])
-    def list_pdc_templates(req: func.HttpRequest, context: func.Context) -> func.HttpResponse:
+@bp.route(route="pdc-template/list", methods=["POST"])
+def list_pdc_templates(req: func.HttpRequest, context: func.Context) -> func.HttpResponse:
         data = req.get_json() if req.get_body() else {}
         cursor = int(data.get('cursor', 0))
         limit = int(data.get('limit', 10))
@@ -42,9 +40,8 @@ def register(app):
         }
         return func.HttpResponse(json.dumps(response), status_code=200)
 
-    @app.function_name(name="UpdatePdcTemplate")
-    @app.route(route="pdc-template/update", methods=["POST"])
-    def update_pdc_template(req: func.HttpRequest, context: func.Context) -> func.HttpResponse:
+@bp.route(route="pdc-template/update", methods=["POST"])
+def update_pdc_template(req: func.HttpRequest, context: func.Context) -> func.HttpResponse:
         data = req.get_json()
         template_id = int(data.get("template_id"))
         schema = PdcTemplateUpdate(**data)
@@ -58,9 +55,8 @@ def register(app):
         except Exception as e:
             return func.HttpResponse("Internal server error", status_code=500)
 
-    @app.function_name(name="DeletePdcTemplate")
-    @app.route(route="pdc-template/delete", methods=["POST"])
-    def delete_pdc_template(req: func.HttpRequest, context: func.Context) -> func.HttpResponse:
+@bp.route(route="pdc-template/delete", methods=["POST"])
+def delete_pdc_template(req: func.HttpRequest, context: func.Context) -> func.HttpResponse:
         data = req.get_json()
         template_id = int(data.get("template_id"))
         deleted_record = delete_template(template_id)

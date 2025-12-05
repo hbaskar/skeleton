@@ -1,0 +1,7 @@
+az functionapp config appsettings set `
+  --name ggaifnc `
+  --resource-group gg-ai-rsg03 `
+  --settings AzureWebJobsFeatureFlags=EnableWorkerIndexing FUNCTIONS_WORKER_RUNTIME=python
+
+
+az functionapp restart --name ggaifnc --resource-group gg-ai-rsg03
