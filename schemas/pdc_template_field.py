@@ -12,6 +12,7 @@ class PdcTemplateFieldBase(BaseModel):
     validation_rule: Optional[str] = None
     sort_order: Optional[int] = None
     lookup_type: Optional[str] = None
+    lookup_url: Optional[str] = None
     is_active: Optional[bool] = True
 
 class PdcTemplateFieldCreate(PdcTemplateFieldBase):
@@ -28,6 +29,7 @@ class PdcTemplateFieldUpdate(BaseModel):
     validation_rule: Optional[str] = None
     sort_order: Optional[int] = None
     lookup_type: Optional[str] = None
+    lookup_url: Optional[str] = None
     is_active: Optional[bool] = None
     modified_by: Optional[str] = None
 

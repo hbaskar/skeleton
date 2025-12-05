@@ -41,7 +41,8 @@ def get_blank_odc_class(req: func.HttpRequest, context: func.Context) -> func.Ht
                         "validation_rule": field.validation_rule,
                         "sort_order": field.sort_order,
                         "is_active": field.is_active,
-                        "lookup_type": getattr(field, "lookup_type", None)
+                        "lookup_type": getattr(field, "lookup_type", None),
+                        "lookup_url": getattr(field, "lookup_url", None)
                     }
             blank_record = {
                 "class_id": None,

@@ -1,12 +1,15 @@
-from models.pdc_template_field import PdcTemplateField
-from models.pdc_template import PdcTemplate
-from models import Base
-from config.database import get_connection_string
-from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker
-from typing import List, Optional
+import os
 import datetime
 from contextlib import contextmanager
+from typing import List, Optional
+
+from sqlalchemy import create_engine
+from sqlalchemy.orm import sessionmaker
+
+from config.database import get_connection_string
+from models import Base
+from models.pdc_template_field import PdcTemplateField
+from models.pdc_template import PdcTemplate
 
 
 engine = create_engine(f"mssql+pyodbc:///?odbc_connect={get_connection_string()}")
@@ -24,6 +27,21 @@ def get_session():
 
 def create_template_field(data) -> PdcTemplateField:
     with get_session() as session:
+        # Validate metadata_key matches one of the template's defined attributes (non-empty value)
+        template = session.query(PdcTemplate).filter(PdcTemplate.template_id == data['template_id']).first()
+        if not template:
+            raise ValueError("Template not found")
+        attribute_values = [getattr(template, f"attribute_{i}") for i in range(1, 36)]
+        allowed = {val for val in attribute_values if val not in (None, "", " ")}
+        if data['metadata_key'] not in allowed:
+            raise ValueError("metadata_key must reference an existing template attribute value")
+
+        # Auto-construct lookup_url when not provided
+        if not data.get('lookup_url'):
+            base_lookup_url = os.getenv('AZURE_LOOKUP_URL', '').rstrip('/')
+            lookup_type = data.get('lookup_type')
+            if base_lookup_url and lookup_type:
+                data['lookup_url'] = f"{base_lookup_url}/{lookup_type}"
         field = PdcTemplateField(
             template_id=data['template_id'],
             metadata_key=data['metadata_key'],
@@ -34,6 +52,7 @@ def create_template_field(data) -> PdcTemplateField:
             validation_rule=data.get('validation_rule'),
             sort_order=data.get('sort_order'),
             lookup_type=data.get('lookup_type'),
+            lookup_url=data.get('lookup_url'),
             is_active=data.get('is_active', True),
             created_at=datetime.datetime.utcnow(),
             created_by=data['created_by']

@@ -14,10 +14,13 @@ bp = func.Blueprint()
 # CREATE
 @bp.route(route="pdc-template-field/create", methods=["POST"])
 def create_pdc_template_field(req: func.HttpRequest, context: func.Context) -> func.HttpResponse:
-        data = req.get_json()
+    data = req.get_json()
+    try:
         schema = PdcTemplateFieldCreate(**data)
         field = create_template_field(schema.dict())
         return func.HttpResponse(json.dumps(field.to_dict()), status_code=201)
+    except ValueError as ve:
+        return func.HttpResponse(str(ve), status_code=400)
 
 # READ
 @bp.route(route="pdc-template-field/get", methods=["GET"])

@@ -36,7 +36,7 @@
           "request": {
             "method": "POST",
             "header": [ { "key": "Content-Type", "value": "application/json" } ],
-            "body": { "mode": "raw", "raw": "{\n  \"template_id\": 1,\n  \"metadata_key\": \"C1\",\n  \"display_name\": \"First Name\",\n  \"data_type\": \"string\",\n  \"is_required\": true,\n  \"default_value\": \"\",\n  \"validation_rule\": \"^[A-Za-z]+$\",\n  \"sort_order\": 1,\n  \"is_active\": true,\n  \"lookup_type\": \"dropdown\",\n  \"created_by\": \"tester\"\n}" },
+            "body": { "mode": "raw", "raw": "{\n  \"template_id\": 1,\n  \"metadata_key\": \"C1\",\n  \"display_name\": \"First Name\",\n  \"data_type\": \"string\",\n  \"is_required\": true,\n  \"default_value\": \"\",\n  \"validation_rule\": \"^[A-Za-z]+$\",\n  \"sort_order\": 1,\n  \"is_active\": true,\n  \"lookup_type\": \"dropdown\",\n  \"lookup_url\": \"https://example.com/lookup/c1\",\n  \"created_by\": \"tester\"\n}" },
             "url": "{{base_url}}/api/pdc-template-field/create"
           }
         },
@@ -61,7 +61,7 @@
           "request": {
             "method": "POST",
             "header": [ { "key": "Content-Type", "value": "application/json" } ],
-            "body": { "mode": "raw", "raw": "{\n  \"template_field_id\": 1,\n  \"display_name\": \"First Name Updated\",\n  \"is_active\": false,\n  \"lookup_type\": \"dropdown\",\n  \"modified_by\": \"updater\"\n}" },
+            "body": { "mode": "raw", "raw": "{\n  \"template_field_id\": 1,\n  \"display_name\": \"First Name Updated\",\n  \"is_active\": false,\n  \"lookup_type\": \"dropdown\",\n  \"lookup_url\": \"https://example.com/lookup/c1-updated\",\n  \"modified_by\": \"updater\"\n}" },
             "url": "{{base_url}}/api/pdc-template-field/update"
           }
         },
