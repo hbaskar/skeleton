@@ -13,6 +13,8 @@ class PdcTemplateFieldBase(BaseModel):
     sort_order: Optional[int] = None
     lookup_type: Optional[str] = None
     lookup_url: Optional[str] = None
+    description: Optional[str] = None
+    group_header: Optional[str] = None
     is_active: Optional[bool] = True
 
 class PdcTemplateFieldCreate(PdcTemplateFieldBase):
@@ -30,6 +32,8 @@ class PdcTemplateFieldUpdate(BaseModel):
     sort_order: Optional[int] = None
     lookup_type: Optional[str] = None
     lookup_url: Optional[str] = None
+    description: Optional[str] = None
+    group_header: Optional[str] = None
     is_active: Optional[bool] = None
     modified_by: Optional[str] = None
 

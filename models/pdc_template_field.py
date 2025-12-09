@@ -16,6 +16,8 @@ class PdcTemplateField(Base):
     sort_order = Column(Integer)
     lookup_type = Column(String(100))
     lookup_url = Column(String(500))
+    description = Column(String(500))
+    group_header = Column(String(200))
     is_active = Column(Boolean, default=True, nullable=False)
     created_at = Column(DateTime, default=datetime.datetime.utcnow, nullable=False)
     created_by = Column(String(100), nullable=False)
@@ -35,6 +37,8 @@ class PdcTemplateField(Base):
             'sort_order': self.sort_order,
             'lookup_type': self.lookup_type,
             'lookup_url': self.lookup_url,
+            'description': self.description,
+            'group_header': self.group_header,
             'is_active': self.is_active,
             'created_at': self.created_at.isoformat() if self.created_at else None,
             'created_by': self.created_by,
